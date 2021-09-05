@@ -1,14 +1,15 @@
 const fs = require("fs");
 const ascii = require("ascii-table");
+const awdwd = require('')
 
 let table = new ascii("Commands")
 table.setHeading("Command", "load status")
 
 module.exports = (client) => {
-  const cmdFolders = fs.readdirSync("./commands");
+  const cmdFolders = fs.readdirSync("../commands");
 
   cmdFolders.forEach(cmdFolder => {
-    const cmdFiles = fs.readdirSync(`./commands/${cmdFolder}`).filter(f => f.endsWith(".js"));
+    const cmdFiles = fs.readdirSync(`../commands/${cmdFolder}`).filter(f => f.endsWith(".js"));
 
     cmdFiles.forEach(file => {
       const command = require(`../commands/${cmdFolder}/${file}`)
@@ -16,7 +17,7 @@ module.exports = (client) => {
       if (command.name && command.execute) {
         client.commands.set(command.name, command);
         table.addRow(file, "✅")
-      }else{
+      } else {
         table.addRow(file, "❌")
       }
     })
