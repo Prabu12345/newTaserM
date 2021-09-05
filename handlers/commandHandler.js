@@ -5,7 +5,7 @@ let table = new ascii("Commands")
 table.setHeading("Command", "load status")
 
 module.exports = (client) => {
-  const cmdFolders = fs.readdirSync("../commands");
+  const cmdFolders = fs.readdirSync("../commands/");
 
   cmdFolders.forEach(cmdFolder => {
     const cmdFiles = fs.readdirSync(`../commands/${cmdFolder}`).filter(f => f.endsWith(".js"));
