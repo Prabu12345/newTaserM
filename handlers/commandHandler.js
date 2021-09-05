@@ -1,6 +1,5 @@
 const fs = require("fs");
 const ascii = require("ascii-table");
-const awdwd = require('')
 
 let table = new ascii("Commands")
 table.setHeading("Command", "load status")
