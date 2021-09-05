@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 module.exports = (client) => {
-  const cmdFolders = fs.readdirSync("./SlashCommands/");
+  const cmdFolders = fs.readdirSync("./SlashCommands");
 
   const cmdArr = [];
   cmdFolders.forEach(cmdFolder => {
