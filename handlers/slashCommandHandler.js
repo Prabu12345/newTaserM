@@ -21,7 +21,6 @@ module.exports = (client) => {
     console.log("Ready Again");
     try {
       cmdArr.forEach(async cmd => {
-        console.log(cmd);
         await client.guilds.cache.forEach(async guild =>{
           await guild?.commands.create(cmd).catch(err => {})
         })
