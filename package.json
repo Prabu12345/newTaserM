@@ -16,6 +16,9 @@
     "ascii-table": "^0.0.9",
     "discord.js": "^13.1.0"
   },
+    "engines": {
+    "node": ">=16.6.0"
+  },
   "bugs": {
     "url": "https://github.com/Prabu12345/newTaserM/issues"
   },
