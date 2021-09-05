@@ -1,21 +1,23 @@
 {
-  "name": "new-taserm",
+  "name": "newtaserm",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "Test"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Prabu",
-  "license": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prabu12345/newTaserM.git"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-	"ascii-table": "^0.0.9",
-    "discord-buttons": "^4.0.0",
-    "discord.js": "^12.5.3",
-    "mongodb": "^4.0.1",
-    "mongoose": "^5.13.3",
-    "nekos.life": "^2.0.7",
-    "node-scrapy": "^0.5.0",
-    "request": "^2.88.0"
+    "ascii-table": "^0.0.9",
+    "discord.js": "^12.5.3"
   },
-  "description": ""
+  "bugs": {
+    "url": "https://github.com/Prabu12345/newTaserM/issues"
+  },
+  "homepage": "https://github.com/Prabu12345/newTaserM#readme"
 }
