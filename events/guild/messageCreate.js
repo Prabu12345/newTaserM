@@ -1,5 +1,9 @@
-module.exports = (client, message) => {
-    const PREFIX = "!"; //change it according to your need
+const guildSchema = require("../../resource/database/guild")
+
+module.exports = async (client, message) => {
+    const guildData = await guildSchema.find({ id: message.guild.id });
+
+    const PREFIX = guildData[0].prefix; //change it according to your need
   
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
   
@@ -10,6 +14,5 @@ module.exports = (client, message) => {
     const cmd = client.commands.get(command);
     if (!cmd) return;
   
-    console.log("Hello");
     cmd.execute(client, message, args, PREFIX);
 }
