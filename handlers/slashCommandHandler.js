@@ -1,11 +1,11 @@
 const fs = require("fs");
 
 module.exports = (client) => {
-  const cmdFolders = fs.readdirSync("../");
+  const cmdFolders = fs.readdirSync("./SlashCommands/");
 
   const cmdArr = [];
   cmdFolders.forEach(cmdFolder => {
-    const cmdFiles = fs.readdirSync(`../SlashCommands/${cmdFolder}`).filter(f => f.endsWith(".js"));
+    const cmdFiles = fs.readdirSync(`./SlashCommands/${cmdFolder}`).filter(f => f.endsWith(".js"));
 
     cmdFiles.forEach(file => {
       const command = require(`../SlashCommands/${cmdFolder}/${file}`)
