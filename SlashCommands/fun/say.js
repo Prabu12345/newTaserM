@@ -3,7 +3,6 @@ const { Client, Interaction } = require("discord.js");
 module.exports = {
   name: "say",
   description: "Says What Said To say",
-  type: "CHAT_INPUT",
   options: [
     {
       name: "text",
@@ -23,8 +22,7 @@ module.exports = {
 
       const whatToSay = interaction.options._hoistedOptions.find((f) => f.name === "text").value;
 
-      await interaction.editReply({ content: "Sending..." });
-      await interaction.deleteReply();
+      await interaction.editReply({ content: "Sending...", ephemeral: true});
 
       await interaction.channel.send({ content: whatToSay });
     } catch (err) {

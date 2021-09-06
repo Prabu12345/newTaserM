@@ -21,7 +21,7 @@ module.exports = {
   // just for telling that u can also add options
   execute: async (client, interaction) => {
     try {
-      const newPrefix = interaction.options._hoistedOptions.find((f) => f.name === "text").value;
+      const newPrefix = interaction.options._hoistedOptions.find((f) => f.name === "prefix").value;
       
       await guildSchema.findOneAndUpdate(
         {
