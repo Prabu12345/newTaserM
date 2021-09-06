@@ -18,7 +18,7 @@ module.exports = async (client, guild) => {
       const cmdFiles = fs.readdirSync(`./SlashCommands/${cmdFolder}`).filter(f => f.endsWith(".js"));
   
       cmdFiles.forEach(file => {
-        const command = require(`../SlashCommands/${cmdFolder}/${file}`)
+        const command = require(`../../SlashCommands/${cmdFolder}/${file}`)
   
         if (command.name && command.execute) {
           cmdArr.push(command)
