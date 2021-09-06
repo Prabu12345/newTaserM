@@ -1,5 +1,4 @@
 const { Client, Interaction } = require("discord.js");
-const messageCreate = require("../../events/guild/messageCreate");
 const guildSchema = require("../../resource/database/guild")
 
 module.exports = {
