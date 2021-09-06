@@ -18,11 +18,9 @@ module.exports = {
    */
   execute: async (client, interaction) => {
     try {
-      await interaction.deferReply().catch((err) => {});
-
       const whatToSay = interaction.options._hoistedOptions.find((f) => f.name === "text").value;
 
-      await interaction.editReply({ content: "Sending...", ephemeral: true});
+      await interaction.reply({ content: "Sending...", ephemeral: true });
 
       await interaction.channel.send({ content: whatToSay });
     } catch (err) {

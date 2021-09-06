@@ -32,7 +32,7 @@ module.exports = {
         }
       )
 
-      interaction.reply({content: `<@${interaction.author.id}>, Set the command prefix to \`${newPrefix}\`. To run commands, use \`${newPrefix}command\`.`})
+      interaction.reply({content: `<@${interaction.user.id}>, Set the command prefix to \`${newPrefix}\`. To run commands, use \`${newPrefix}command\`.`})
     } catch (err) {
       console.log("Something Went Wrong => ",err);
     }
