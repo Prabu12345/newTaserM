@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-module.exports = (client) => {
+module.exports = async (client) => {
     console.log("Bot is Now Ready as", client.user.tag);
     await mongoose.connect('mongodb+srv://admin:lakilaki@cluster0.yvw90.mongodb.net/guaa?retryWrites=true&w=majority', {
         useNewUrlParser: true,
