@@ -1,4 +1,5 @@
-const guildSchema = require("../../resource/database/guild")
+const guildSchema = require("../../resource/database/guild");
+const fs = require("fs");
 
 module.exports = async (client, guild) => {
     guildSchema.deleteOne({ id: guild.id }, (err, data) => {
