@@ -63,7 +63,8 @@ module.exports = {
         await client.distube.playVoiceChannel(voiceChannel, Text, options)
 				//Edit the reply
 				interaction.editReply({
-					content: `${queue?.songs?.length > 0 ? "👍 Added" : "🎶 Now Playing"}: \`\`\`css\n${Text}\n\`\`\``
+					content: `${queue?.songs?.length > 0 ? "👍 Added" : "🎶 Now Playing"}: \`\`\`css\n${Text}\n\`\`\``,
+          ephemeral: true
 				});
     } catch (err) {
         console.log("Something Went Wrong => ",err);
