@@ -68,7 +68,7 @@ client.distube
     .setDescription(text)
     .setThumbnail(song.thumbnail)
     .setTimestamp()
-		let playMSG = await queue.textChannel.send(Embed)
+		let playMSG = await queue.textChannel.send({ embeds: [Embed] })
     setTimeout(() => {
       playMSG.delete()
     }, song.duration*1000) 
@@ -81,7 +81,7 @@ client.distube
     .setDescription(text)
     .setThumbnail(song.thumbnail)
     .setTimestamp()
-    queue.textChannel.send(Embed)
+    queue.textChannel.send({ embeds: [Embed] })
   })
 	.on('addList', async (queue, playlist) => {
     let text = 	`Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue by ${playlist.member.nickname}\n${status(queue)}`
@@ -90,7 +90,7 @@ client.distube
     .setColor(config.normalColor)
     .setDescription(text)
     .setTimestamp()
-    queue.textChannel.send(Embed)
+    queue.textChannel.send({ embeds: [Embed] })
   })
 	// DisTubeOptions.searchSongs = true
 	.on('searchResult', (message, result) => {
