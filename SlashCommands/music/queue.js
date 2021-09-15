@@ -38,7 +38,7 @@ module.exports = {
             return interaction.reply({ content: `I need the following permissions for this command to work: \`${missing.map(perm => permissions[perm]).join(', ')}\``});
         }
 
-        let newQueue = client.distube.getQueue(guildId);
+        let newQueue = client.distube.getQueue(interaction.guildId);
         if (!newQueue || !newQueue.songs || newQueue.songs.length == 0) return interaction.reply({
             embeds: [
                 new MessageEmbed().setColor(config.errColor).setTitle(`:x: **I am nothing Playing right now!**`)
