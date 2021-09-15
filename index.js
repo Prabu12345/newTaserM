@@ -74,22 +74,20 @@ function Embed(authorString, string, color, thumbnail) {
 
 client.distube
 	.on('playSong', async (queue, song) => {
-    let text = `Playing \`${song.name}\` - \`${
-      song.formattedDuration
-    }\`\nRequested by: ${song.member.nickname}\n${status(queue)}`
+    let text = `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.member.nickname}\n${status(queue)}`
 
 		let playMSG = await queue.textChannel.send(Embed('Now Playing', text, config.normalColor, song.thumbnail))
     setTimeout(() => {
       playMSG.delete()
     }, song.duration*1000) 
   })
-	.on('addSong', (queue, song) => {
+	.on('addSong', async (queue, song) => {
     let text = `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.member.nickname}\n${status(queue)}`
-    queue.textChannel.send(Embed('Added to queue', text, config.normalColor, song.thumbnail))
+    await queue.textChannel.send(Embed('Added to queue', text, config.normalColor, song.thumbnail))
   })
-	.on('addList', (queue, playlist) => {
+	.on('addList', async (queue, playlist) => {
     let text = 	`Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue by ${playlist.member.nickname}\n${status(queue)}`
-    queue.textChannel.send(Embed('Added to queue', text, config.normalColor, null))
+    await queue.textChannel.send(Embed('Added to queue', text, config.normalColor, null))
   })
 	// DisTubeOptions.searchSongs = true
 	.on('searchResult', (message, result) => {
