@@ -70,12 +70,12 @@ module.exports = {
 
         let button1 = new MessageButton()
             .setCustomId('previousbtn')
-            .setEmoji('Previous')
+            .setLabel('Previous')
             .setStyle('SUCCESS')
         
         let button2 = new MessageButton()
             .setCustomId('nextbtn')
-            .setEmoji('Next')
+            .setLabel('Next')
             .setStyle('SUCCESS')
 
         let pages = embeds
