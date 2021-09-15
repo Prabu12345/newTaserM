@@ -37,6 +37,7 @@ module.exports = {
         }
 
         let voicemissing = interaction.member.voice.channel.permissionsFor(interaction.guild.me).missing(['SPEAK', 'CONNECT']);
+        let missing = [];
         voicemissing.map(element =>
             missing.push(element)
         );
