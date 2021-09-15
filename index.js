@@ -1,5 +1,5 @@
 const { Client, Intents } = require("discord.js");
-const DisTube = require('distube')
+const DisTube = require("distube").default;
 
 const filters = require(`./filter.json`);
 
