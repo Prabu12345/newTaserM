@@ -59,35 +59,38 @@ const status = queue =>
 			: 'Off'
 	}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``
 
-function Embed(authorString, string, color, thumbnail) {
-  const Embed = new MessageEmbed()
-  .setAuthor(authorString)
-  .setColor(color)
-  .setDescription(string)
-  if (thumbnail !== null) {
-    Embed.setThumbnail(thumbnail)
-  }
-  Embed.setTimestamp()
-
-  return Embed
-}
-
 client.distube
 	.on('playSong', async (queue, song) => {
     let text = `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.member.nickname}\n${status(queue)}`
-
-		let playMSG = await queue.textChannel.send(Embed('Now Playing', text, config.normalColor, song.thumbnail))
+    const Embed = new MessageEmbed()
+    .setAuthor('Added to queue')
+    .setColor(config.normalColor)
+    .setDescription(text)
+    .setThumbnail()
+    .setTimestamp(song.thumbnail)
+		let playMSG = await queue.textChannel.send(Embed)
     setTimeout(() => {
       playMSG.delete()
     }, song.duration*1000) 
   })
 	.on('addSong', async (queue, song) => {
     let text = `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.member.nickname}\n${status(queue)}`
-    await queue.textChannel.send(Embed('Added to queue', text, config.normalColor, song.thumbnail))
+    const Embed = new MessageEmbed()
+    .setAuthor('Added to queue')
+    .setColor(config.normalColor)
+    .setDescription(text)
+    .setThumbnail()
+    .setTimestamp(song.thumbnail)
+    queue.textChannel.send(Embed)
   })
 	.on('addList', async (queue, playlist) => {
     let text = 	`Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue by ${playlist.member.nickname}\n${status(queue)}`
-    await queue.textChannel.send(Embed('Added to queue', text, config.normalColor, null))
+    const Embed = new MessageEmbed()
+    .setAuthor('Added to queue')
+    .setColor(config.normalColor)
+    .setDescription(text)
+    .setTimestamp()
+    queue.textChannel.send(Embed)
   })
 	// DisTubeOptions.searchSongs = true
 	.on('searchResult', (message, result) => {
