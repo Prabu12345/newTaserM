@@ -1,4 +1,6 @@
 {
   "prefix": "sb ",
-  "currencyPrefix": "SeiBu Coins"
+  "currencyPrefix": "SeiBu Coins",
+  "errColor": "#ff7373",
+  "normalColor": "#89CFF0"
 }
