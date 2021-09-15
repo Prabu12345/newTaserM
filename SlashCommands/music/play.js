@@ -55,7 +55,7 @@ module.exports = {
           ephemeral: true
         });
 
-        let queue = client.distube.getQueue(guildId)
+        let queue = client.distube.getQueue(interaction.guildId)
 				let options = {
 					member: interaction.member.guild,
 				}
