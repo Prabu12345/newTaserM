@@ -1,4 +1,4 @@
-const { Client, Intents } = require("discord.js");
+const { Client, Intents, MessageEmbed } = require("discord.js");
 const DisTube = require("distube").default;
 
 const filters = require(`./filter.json`);
@@ -7,6 +7,8 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
+const config = require('./config.json')
+
 let spotifyoptions = {
   parallel: true,
   emitEventsAfterFetching: true,
@@ -57,27 +59,38 @@ const status = queue =>
 			: 'Off'
 	}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``
 
+function Embed(authorString, string, color, thumbnail) {
+  const Embed = new MessageEmbed()
+  .setAuthor(authorString)
+  .setColor(color)
+  .setDescription(string)
+  if (thumbnail !== null) {
+    Embed.setThumbnail(thumbnail)
+  }
+  Embed.setTimestamp()
+
+  return Embed
+}
+
 client.distube
 	.on('playSong', async (queue, song) => {
-		let playMSG = await queue.textChannel.send(
-			`Playing \`${song.name}\` - \`${
-				song.formattedDuration
-			}\`\nRequested by: ${song.user}\n${status(queue)}`,
-		)
+    let text = `Playing \`${song.name}\` - \`${
+      song.formattedDuration
+    }\`\nRequested by: ${song.member.nickname}\n${status(queue)}`
+
+		let playMSG = await queue.textChannel.send(Embed('Now Playing', text, config.normalColor, song.thumbnail))
     setTimeout(() => {
       playMSG.delete()
     }, song.duration*1000) 
   })
-	.on('addSong', (queue, song) =>
-		queue.textChannel.send(
-			`Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`,
-		))
-	.on('addList', (queue, playlist) =>
-		queue.textChannel.send(
-			`Added \`${playlist.name}\` playlist (${
-				playlist.songs.length
-			} songs) to queue`,
-		))
+	.on('addSong', (queue, song) => {
+    let text = `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.member.nickname}\n${status(queue)}`
+    queue.textChannel.send(Embed('Added to queue', text, config.normalColor, song.thumbnail))
+  })
+	.on('addList', (queue, playlist) => {
+    let text = 	`Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue by ${playlist.member.nickname}\n${status(queue)}`
+    queue.textChannel.send(Embed('Added to queue', text, config.normalColor, null))
+  })
 	// DisTubeOptions.searchSongs = true
 	.on('searchResult', (message, result) => {
 		let i = 0
@@ -98,15 +111,15 @@ client.distube
 	.on('searchCancel', message => message.channel.send(`Searching canceled`))
 	.on('searchInvalidAnswer', message =>
 		message.channel.send(`searchInvalidAnswer`))
-	.on('searchNoResult', message => message.channel.send(`No result found!`))
+	.on('searchNoResult', message => message.channel.send(`:x: No result found!`))
 	.on('error', (textChannel, e) => {
 		console.error(e)
-		textChannel.send(`An error encountered: ${e.slice(0, 2000)}`)
+		textChannel.send(`:x: An error encountered: ${e.slice(0, 2000)}`)
 	})
 	.on('finish', queue => queue.textChannel.send('Finish queue!'))
-	.on('finishSong', queue => queue.textChannel.send('Finish song!'))
+	.on('finishSong', queue => {})
 	.on('disconnect', queue => queue.textChannel.send('Disconnected!'))
-	.on('empty', queue => queue.textChannel.send('Empty!'))
+	.on('empty', queue => queue.textChannel.send('Voice channel is empty! leaving...'))
 
 const { readdirSync } = require("fs");
 

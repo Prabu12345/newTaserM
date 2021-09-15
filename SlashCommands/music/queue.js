@@ -43,7 +43,7 @@ module.exports = {
         let newQueue = client.distube.getQueue(interaction.guildId);
         if (!newQueue || !newQueue.songs || newQueue.songs.length == 0) return interaction.reply({
             embeds: [
-                new MessageEmbed().setColor(config.errColor).setTitle(`:x: **I am nothing Playing right now!**`)
+                new MessageEmbed().setColor(config.errColor).setTitle(`:x: I am nothing Playing right now!`)
             ],
             ephemeral: true
         })
@@ -60,7 +60,7 @@ module.exports = {
                 .setColor(config.normalColor)
                 .setDescription(`${info}`)
             if (i < 10) {
-                embed.setTitle(`📑 **Queue of ${interaction.member.guild.name} | Page ${k/10}/${theSongs.length/10}**`)
+                embed.setTitle(`📑 **Queue of ${interaction.member.guild.name}**`)
                 embed.setDescription(`**(0) Current Song:**\n> [\`${theSongs[0].name.replace(/\[/igu, "{").replace(/\]/igu, "}")}\`](${theSongs[0].url})\n\n${info}`)
             }
                 embed.setFooter(`\n${theSongs.length} Songs in the Queue | Duration: ${newQueue.formattedDuration}`)
