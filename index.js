@@ -58,14 +58,14 @@ const status = queue =>
 	}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``
 
 client.distube
-	.on('playSong', (queue, song) => {
-		queue.textChannel.send(
+	.on('playSong', async (queue, song) => {
+		let playMSG = await queue.textChannel.send(
 			`Playing \`${song.name}\` - \`${
 				song.formattedDuration
 			}\`\nRequested by: ${song.user}\n${status(queue)}`,
-		),
+		)
     setTimeout(() => {
-      queue.textChannel.delete()
+      playMSG.delete()
     }, song.duration) 
   })
 	.on('addSong', (queue, song) =>
