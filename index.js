@@ -66,7 +66,7 @@ client.distube
 		)
     setTimeout(() => {
       playMSG.delete()
-    }, song.duration) 
+    }, song.duration*1000) 
   })
 	.on('addSong', (queue, song) =>
 		queue.textChannel.send(
