@@ -66,8 +66,8 @@ client.distube
     .setAuthor('Added to queue')
     .setColor(config.normalColor)
     .setDescription(text)
-    .setThumbnail()
-    .setTimestamp(song.thumbnail)
+    .setThumbnail(song.thumbnail)
+    .setTimestamp()
 		let playMSG = await queue.textChannel.send(Embed)
     setTimeout(() => {
       playMSG.delete()
@@ -79,8 +79,8 @@ client.distube
     .setAuthor('Added to queue')
     .setColor(config.normalColor)
     .setDescription(text)
-    .setThumbnail()
-    .setTimestamp(song.thumbnail)
+    .setThumbnail(song.thumbnail)
+    .setTimestamp()
     queue.textChannel.send(Embed)
   })
 	.on('addList', async (queue, playlist) => {
