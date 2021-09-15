@@ -13,6 +13,8 @@ module.exports = {
       required: true,
     },
   ],
+  permissions: ["MANAGE_MESSAGES"],
+  botPerms: [],
   /**
    *
    * @param {Client} client
@@ -22,6 +24,8 @@ module.exports = {
   execute: async (client, interaction) => {
     try {
       const newPrefix = interaction.options._hoistedOptions.find((f) => f.name === "prefix").value;
+
+      if (newPrefix.length > 3) return interaction.reply({content: "There are to long!", ephemeral: true})
       
       await guildSchema.findOneAndUpdate(
         {
