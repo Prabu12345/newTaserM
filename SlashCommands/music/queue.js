@@ -1,5 +1,7 @@
-const { Client, Interaction, MessageEmbed, 	MessageSelectMenu, MessageActionRow } = require("discord.js");
+const { Client, Interaction, MessageEmbed, MessageActionRow, MessageButton, ButtonInteraction } = require("discord.js");
 const config = require('../../config.json');
+const paginationEmbed = require('discordjs-button-pagination');
+const { Queue } = require("distube");
 
 module.exports = {
   name: "queue",
@@ -58,47 +60,32 @@ module.exports = {
                 .setColor(config.normalColor)
                 .setDescription(`${info}`)
             if (i < 10) {
-                embed.setTitle(`📑 **Top ${theSongs.length > 50 ? 50 : theSongs.length} | Queue of ${interaction.member.guild.name}**`)
+                embed.setTitle(`📑 **Queue of ${interaction.member.guild.name} | Page ${k/10}/${theSongs.length/10}**`)
                 embed.setDescription(`**(0) Current Song:**\n> [\`${theSongs[0].name.replace(/\[/igu, "{").replace(/\]/igu, "}")}\`](${theSongs[0].url})\n\n${info}`)
             }
+                embed.setFooter(`\n${theSongs.length} Songs in the Queue | Duration: ${newQueue.formattedDuration}`)
             embeds.push(embed);
             k += 10; //Raise k to 10
         }
-        embeds[embeds.length - 1] = embeds[embeds.length - 1]
-            .setFooter(`\n${theSongs.length} Songs in the Queue | Duration: ${newQueue.formattedDuration}`)
-        let pages = []
-        for (let i = 0; i < embeds.length; i += 3) {
-            pages.push(embeds.slice(i, i + 3));
-        }
-        pages = pages.slice(0, 24)
-        const Menu = new MessageSelectMenu()
-            .setCustomId("QUEUEPAGES")
-            .setPlaceholder("Select a Page")
-            .addOptions([
-                pages.map((page, index) => {
-                    let Obj = {};
-                    Obj.label = `Page ${index}`
-                    Obj.value = `${index}`;
-                    Obj.description = `Shows the ${index}/${pages.length - 1} Page!`
-                    return Obj;
-                })
-            ])
-        const row = new MessageActionRow().addComponents([Menu])
-        interaction.reply({
-            embeds: [embeds[0]],
-            components: [row],
-            ephemeral: true
-        });
-        //Event
-        client.on('interactionCreate', (i) => {
-            if (!i.isSelectMenu()) return;
-            if (i.customId === "QUEUEPAGES" && i.applicationId == client.user.id) {
-                i.reply({
-                    embeds: pages[Number(i.values[0])],
-                    ephemeral: true
-                }).catch(e => {})
-            }
-        });
+
+        let button1 = new MessageButton()
+            .setCustomId('previousbtn')
+            .setEmoji('Previous')
+            .setStyle('SUCCESS')
+        
+        let button2 = new MessageButton()
+            .setCustomId('nextbtn')
+            .setEmoji('Next')
+            .setStyle('SUCCESS')
+
+        let pages = embeds
+            
+        let buttonList = [
+            button1,
+            button2
+        ]
+
+        paginationEmbed(interaction, pages, buttonList, 60000);
     } catch (err) {
         console.log("Something Went Wrong => ",err);
     }

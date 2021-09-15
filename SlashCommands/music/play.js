@@ -57,9 +57,9 @@ module.exports = {
 
         let queue = client.distube.getQueue(interaction.guildId)
 				let options = {
-					member: interaction.member.guild,
+					member: interaction.member,
 				}
-				if (!queue) options.textChannel = interaction.member.guild.channels.cache.get(interaction.channelId)
+				if (!queue) options.textChannel = interaction.guild.channels.cache.get(interaction.channelId)
         await client.distube.playVoiceChannel(voiceChannel, Text, options)
 				//Edit the reply
 				interaction.editReply({
