@@ -39,8 +39,8 @@ module.exports = {
             embeds: [new MessageEmbed()
               .setColor(config.normalColor)
               .setTimestamp()
-              .setTitle(`🗑 **Cleared the Queue and deleted ${amount} Songs!**`)
-              .setFooter(`💢 Action by: ${interaction.member.user.tag}`, interaction.member.user.displayAvatarURL({dynamic: true}))]
+              .setTitle(`**Cleared the Queue and deleted ${amount} Songs!**`)
+              .setFooter(`Action by: ${interaction.member.user.tag}`, interaction.member.user.displayAvatarURL({dynamic: true}))]
         })
     } catch (err) {
         console.log("Something Went Wrong => ",err);
@@ -48,7 +48,7 @@ module.exports = {
             content: `:x: | Error: `,
             embeds: [
                 new MessageEmbed().setColor(config.errColor)
-                .setDescription(`\`\`\`${e}\`\`\``)
+                .setDescription(`\`\`\`${err}\`\`\``)
             ],
             ephemeral: true
         })

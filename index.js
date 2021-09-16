@@ -59,17 +59,19 @@ const status = queue =>
 			: 'Off'
 	}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``
 
+const PlayerMap = new Map()
+
 client.distube
 	.on('playSong', async (queue, song) => {
     var embed = new MessageEmbed().setColor(config.normalColor)
-    .addField(`💡 Requested by:`, `>>> ${song.member.user.tag}`, true)
-    .addField(`⏱ Duration:`, `>>> \`${queue.formattedCurrentTime} / ${song.formattedDuration}\``, true)
-    .addField(`🌀 Queue:`, `>>> \`${queue.songs.length} song(s)\`\n\`${queue.formattedDuration}\``, true)
-    .addField(`🔊 Volume:`, `>>> \`${queue.volume} %\``, true)
-    .addField(`♾ Loop:`, `>>> ${queue.repeatMode ? queue.repeatMode === 2 ? `:white_check_mark: \` Queue\`` : `:white_check_mark: \`Song\`` : `:x:`}`, true)
-    .addField(`↪️ Autoplay:`, `>>> ${queue.autoplay ? `:white_check_mark:` : `:x:`}`, true)
-    .addField(`❔ Download Song:`, `>>> [\`Click here\`](${song.streamURL})`, true)
-    .addField(`❔ Filter${queue.filters.length > 0 ? "s": ""}:`, `>>> ${queue.filters && queue.filters.length > 0 ? `${queue.filters.map(f=>`\`${f}\``).join(`, `)}` : `:x:`}`, queue.filters.length > 1 ? false : true)
+    .addField(`Requested by:`, `>>> ${song.member.user.tag}`, true)
+    .addField(`Duration:`, `>>> \`${queue.formattedCurrentTime} / ${song.formattedDuration}\``, true)
+    .addField(`Queue:`, `>>> \`${queue.songs.length} song(s)\`\n\`${queue.formattedDuration}\``, true)
+    .addField(`Volume:`, `>>> \`${queue.volume} %\``, true)
+    .addField(`Loop:`, `>>> ${queue.repeatMode ? queue.repeatMode === 2 ? `:white_check_mark: \` Queue\`` : `:white_check_mark: \`Song\`` : `:x:`}`, true)
+    .addField(`Autoplay:`, `>>> ${queue.autoplay ? `:white_check_mark:` : `:x:`}`, true)
+    .addField(`Download Song:`, `>>> [\`Click here\`](${song.streamURL})`, true)
+    .addField(`Filter${queue.filters.length > 0 ? "s": ""}:`, `>>> ${queue.filters && queue.filters.length > 0 ? `${queue.filters.map(f=>`\`${f}\``).join(`, `)}` : `:x:`}`, queue.filters.length > 1 ? false : true)
     .setAuthor(`${song.name}`, `https://cdn.discordapp.com/attachments/706329990320488541/887977649492877382/tenor.gif`, song.url)
     .setThumbnail(`https://img.youtube.com/vi/${song.id}/mqdefault.jpg`)
     .setFooter(`${song.user.tag}`, song.user.displayAvatarURL({
@@ -77,10 +79,10 @@ client.distube
     }))
     .setTimestamp();
 
-		let playMSG = await queue.textChannel.send({ embeds: [embed] })
-    setTimeout(() => {
-      playMSG.delete()
-    }, song.duration*1000) 
+		await queue.textChannel.send({ embeds: [embed] }).then(msg => {
+      PlayerMap.set(`currentmsg`, msg.id);
+      return msg;
+    })
   })
 	.on('addSong', async (queue, song) => {
     let text = `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.member.user.tag}\n\n${status(queue)}`
@@ -127,7 +129,13 @@ client.distube
 		textChannel.send(`:x: An error encountered: ${e.slice(0, 2000)}`)
 	})
 	.on('finish', queue => queue.textChannel.send('Finish queue!'))
-	.on('finishSong', queue => {})
+	.on('finishSong', queue => {
+    queue.textChannel.messages.fetch(PlayerMap.get(`currentmsg`)).then(currentSongPlayMsg=>{
+      currentSongPlayMsg.delete();
+    }).catch((e) => {
+      //console.log(e.stack ? String(e.stack).grey : String(e).grey)
+    })
+  })
 	.on('disconnect', queue => {})
 	.on('empty', queue => queue.textChannel.send('Voice channel is empty! leaving...'))
 
