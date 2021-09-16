@@ -26,8 +26,8 @@ module.exports = {
         }
 
         let newQueue = client.distube.getQueue(interaction.guildId);
-        if (newQueue.songs.length == 0) {
-            interaction.reply({
+        if (!newQueue || !newQueue.songs || newQueue.songs.length == 0) {
+            return interaction.reply({
                 content: `Nothing Played`,
                 ephemeral: true
             })
