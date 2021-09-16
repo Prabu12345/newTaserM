@@ -61,14 +61,23 @@ const status = queue =>
 
 client.distube
 	.on('playSong', async (queue, song) => {
-    let text = `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.member.user.tag}\n\n${status(queue)}`
-    const Embed = new MessageEmbed()
-    .setAuthor('Now Playing')
-    .setColor(config.normalColor)
-    .setDescription(text)
-    .setThumbnail(song.thumbnail)
-    .setTimestamp()
-		let playMSG = await queue.textChannel.send({ embeds: [Embed] })
+    var embed = new MessageEmbed().setColor(config.normalColor)
+    .addField(`💡 Requested by:`, `>>> ${song.member.user.tag}`, true)
+    .addField(`⏱ Duration:`, `>>> \`${queue.formattedCurrentTime} / ${song.formattedDuration}\``, true)
+    .addField(`🌀 Queue:`, `>>> \`${queue.songs.length} song(s)\`\n\`${queue.formattedDuration}\``, true)
+    .addField(`🔊 Volume:`, `>>> \`${queue.volume} %\``, true)
+    .addField(`♾ Loop:`, `>>> ${queue.repeatMode ? queue.repeatMode === 2 ? `:white_check_mark: \` Queue\`` : `:white_check_mark: \`Song\`` : `:x:`}`, true)
+    .addField(`↪️ Autoplay:`, `>>> ${queue.autoplay ? `:white_check_mark:` : `:x:`}`, true)
+    .addField(`❔ Download Song:`, `>>> [\`Click here\`](${song.streamURL})`, true)
+    .addField(`❔ Filter${queue.filters.length > 0 ? "s": ""}:`, `>>> ${queue.filters && queue.filters.length > 0 ? `${queue.filters.map(f=>`\`${f}\``).join(`, `)}` : `:x:`}`, queue.filters.length > 1 ? false : true)
+    .setAuthor(`${song.name}`, `https://cdn.discordapp.com/attachments/706329990320488541/887977649492877382/tenor.gif`, song.url)
+    .setThumbnail(`https://img.youtube.com/vi/${song.id}/mqdefault.jpg`)
+    .setFooter(`${song.user.tag}`, song.user.displayAvatarURL({
+      dynamic: true
+    }))
+    .setTimestamp();
+
+		let playMSG = await queue.textChannel.send({ embeds: [embed] })
     setTimeout(() => {
       playMSG.delete()
     }, song.duration*1000) 
