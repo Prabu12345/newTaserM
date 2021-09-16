@@ -36,7 +36,6 @@ module.exports = {
         })
         let newTrack = newQueue.songs[0];
         interaction.reply({
-            content: `${client.settings.get(interaction.guild.id, "prefix")}play ${newTrack.url}`,
             embeds: [
                 new MessageEmbed().setColor(config.errColor)
                 .setTitle(newTrack.name)
@@ -67,7 +66,7 @@ module.exports = {
             content: `:x: | Error: `,
             embeds: [
                 new MessageEmbed().setColor(config.errColor)
-                .setDescription(`\`\`\`${e}\`\`\``)
+                .setDescription(`\`\`\`${err}\`\`\``)
             ],
             ephemeral: true
         })
