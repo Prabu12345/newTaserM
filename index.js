@@ -73,7 +73,7 @@ client.distube
     .addField(`Download Song`, `[Click here](${song.streamURL})`, true)
     .addField(`Filter${queue.filters.length > 0 ? "s": ""}:`, `${queue.filters && queue.filters.length > 0 ? `${queue.filters.map(f=>`${f}`).join(`, `)}` : `:x:`}`, queue.filters.length > 1 ? false : true)
     .setAuthor(`Now Playing`, `https://cdn.discordapp.com/attachments/706329990320488541/887977649492877382/tenor.gif`)
-    .setDescription(`[${song.name}](${song.url})`)
+    .setDescription(`**[${song.name}](${song.url})**`)
     .setThumbnail(`https://img.youtube.com/vi/${song.id}/mqdefault.jpg`)
     .setFooter(`${song.user.tag}`, song.user.displayAvatarURL({
       dynamic: true
@@ -86,9 +86,9 @@ client.distube
     })
   })
 	.on('addSong', async (queue, song) => {
-    let text = `Added [${song.name}](${song.url}) - ${song.formattedDuration} to the queue by ${song.member.user.tag}}\n\n`
+    let text = `Added **[${song.name}](${song.url})** to the queue by **${song.member.user.tag}**`
     const Embed = new MessageEmbed()
-    .setAuthor('Added to queue')
+    .setAuthor('Added to queue', 'https://cdn.discordapp.com/attachments/706329990320488541/887977649492877382/tenor.gif')
     .setColor(config.normalColor)
     .setDescription(text)
     .addField(`Song Duration`,`${song.formattedDuration}`, true)
@@ -99,14 +99,14 @@ client.distube
     queue.textChannel.send({ embeds: [Embed] })
   })
 	.on('addList', async (queue, playlist) => {
-    let text = 	`Added [${playlist.name}](${playlist.url}) playlist (${playlist.songs.length} songs) to queue by ${playlist.member.user.tag}}`
+    let text = 	`Added **[${playlist.name}](${playlist.url})** playlist (${playlist.songs.length} songs) to queue by **${playlist.member.user.tag}**`
     const Embed = new MessageEmbed()
-    .setAuthor('Added to queue')
+    .setAuthor('Added to queue', 'https://cdn.discordapp.com/attachments/706329990320488541/887977649492877382/tenor.gif')
     .setColor(config.normalColor)
     .setDescription(text)
     .addField(`Playlist Duration`,`${playlist.formattedDuration}`, true)
     //.addField(`Estimated time`,`${queue.formattedDuration}`, true)
-    .addField(`Potition`,`**#**${queue.songs.length} in queue`, true)
+    .addField(`Potition`,`**#** ${queue.songs.length - playlist.songs.length} -> ${queue.songs.length} in queue`, true)
     .setThumbnail(playlist.thumbnail)
     .setTimestamp()
     queue.textChannel.send({ embeds: [Embed] })
