@@ -2,17 +2,8 @@ const { Client, Interaction, MessageEmbed } = require("discord.js");
 const config = require('../../config.json')
 
 module.exports = {
-  name: "volume",
-  description: "Set music volume.",
-  type: "CHAT_INPUT",
-  options: [
-    {
-      name: "input",
-      description: "Percentage volume ( Max 150% )",
-      type: 4,
-      required: true,
-    },
-  ],
+  name: "clear",
+  description: "Clear queue list.",
   permissions: [],
   botPerms: [],
   /**
@@ -23,8 +14,6 @@ module.exports = {
   // just for telling that u can also add options
   execute: async (client, interaction) => {
     try {
-        const volume = interaction.options._hoistedOptions.find((f) => f.name === "input").value;
-
         const voiceChannel = interaction.member.voice.channel;
 
         if (!voiceChannel) {
@@ -44,18 +33,25 @@ module.exports = {
             ],
             ephemeral: true
         })
-        if (volume > 150 || volume < 0) return interaction.reply({
-            embeds: [
-                new MessageEmbed().setColor(config.errColor).setTitle(`:x: The Volume must be between \`0\` and \`150\`!`)
-            ],
-            ephemeral: true
-        })
-        await newQueue.setVolume(volume);
+        let amount = newQueue.songs.length - 2;
+        newQueue.songs = [newQueue.songs[0]];
         interaction.reply({
-            content: `Changed the Volume to __${volume}__%!`
+            embeds: [new MessageEmbed()
+              .setColor(config.normalColor)
+              .setTimestamp()
+              .setTitle(`🗑 **Cleared the Queue and deleted ${amount} Songs!**`)
+              .setFooter(`💢 Action by: ${interaction.member.user.tag}`, interaction.member.user.displayAvatarURL({dynamic: true}))]
         })
     } catch (err) {
         console.log("Something Went Wrong => ",err);
+        interaction.editReply({
+            content: `:x: | Error: `,
+            embeds: [
+                new MessageEmbed().setColor(config.errColor)
+                .setDescription(`\`\`\`${e}\`\`\``)
+            ],
+            ephemeral: true
+        })
     }
   },
 };

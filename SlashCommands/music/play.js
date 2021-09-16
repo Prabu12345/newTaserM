@@ -1,4 +1,4 @@
-const { Client, Interaction, MessageEmbed, GuildMember } = require("discord.js");
+const { Client, Interaction, MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "play",
@@ -27,12 +27,12 @@ module.exports = {
         const voiceChannel = interaction.member.voice.channel;
 
         if (!voiceChannel) {
-          interaction.reply({ content: `${xmoji} | Join a channel and try again`, ephemeral: true });
+          interaction.reply({ content: `:x: Join a channel and try again`, ephemeral: true });
           return;
         }  
         if (interaction.guild.me.voice.channel) {
           if (interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) {
-            return interaction.reply({ content: `${xmoji} | You must be in the same voice channel as the bot's in order to use that!`, ephemeral: true });
+            return interaction.reply({ content: `:x: You must be in the same voice channel as the bot's in order to use that!`, ephemeral: true });
           }
         }
 

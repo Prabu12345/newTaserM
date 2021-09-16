@@ -1,8 +1,17 @@
-const { Client, Interaction, MessageEmbed } = require("discord.js");
+const { Client, Interaction, MessageEmbed, GuildMember } = require("discord.js");
 
 module.exports = {
-  name: "skip",
-  description: "Skip now playing music.",
+  name: "play",
+  description: "Play a song in your voice channel.",
+  type: "CHAT_INPUT",
+  options: [
+    {
+      name: "input",
+      description: "A search term or a link",
+      type: 3,
+      required: true,
+    },
+  ],
   permissions: [],
   botPerms: [],
   /**
@@ -13,10 +22,12 @@ module.exports = {
   // just for telling that u can also add options
   execute: async (client, interaction) => {
     try {
+        const query = interaction.options._hoistedOptions.find((f) => f.name === "input").value;
+
         const voiceChannel = interaction.member.voice.channel;
 
         if (!voiceChannel) {
-          interaction.reply({ content: `:x: | Join a channel and try again`, ephemeral: true });
+          interaction.reply({ content: `:x: Join a channel and try again`, ephemeral: true });
           return;
         }  
         if (interaction.guild.me.voice.channel) {
@@ -25,17 +36,7 @@ module.exports = {
           }
         }
 
-        let newQueue = client.distube.getQueue(interaction.guildId);
-        if (newQueue.songs.length == 0) {
-            interaction.reply({
-                content: `Nothing Played`,
-                ephemeral: true
-            })
-        }
-        await newQueue.skip();
-        interaction.reply({
-            content: `Skipping..`,
-        })
+        
     } catch (err) {
         console.log("Something Went Wrong => ",err);
     }

@@ -61,9 +61,9 @@ const status = queue =>
 
 client.distube
 	.on('playSong', async (queue, song) => {
-    let text = `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.member.nickname}\n${status(queue)}`
+    let text = `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.member.user.tag}\n\n${status(queue)}`
     const Embed = new MessageEmbed()
-    .setAuthor('Added to queue')
+    .setAuthor('Now Playing')
     .setColor(config.normalColor)
     .setDescription(text)
     .setThumbnail(song.thumbnail)
@@ -74,7 +74,7 @@ client.distube
     }, song.duration*1000) 
   })
 	.on('addSong', async (queue, song) => {
-    let text = `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.member.nickname}\n${status(queue)}`
+    let text = `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.member.user.tag}\n\n${status(queue)}`
     const Embed = new MessageEmbed()
     .setAuthor('Added to queue')
     .setColor(config.normalColor)
@@ -84,7 +84,7 @@ client.distube
     queue.textChannel.send({ embeds: [Embed] })
   })
 	.on('addList', async (queue, playlist) => {
-    let text = 	`Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue by ${playlist.member.nickname}\n${status(queue)}`
+    let text = 	`Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue by ${playlist.member.user.tag}\n\n${status(queue)}`
     const Embed = new MessageEmbed()
     .setAuthor('Added to queue')
     .setColor(config.normalColor)
@@ -119,7 +119,7 @@ client.distube
 	})
 	.on('finish', queue => queue.textChannel.send('Finish queue!'))
 	.on('finishSong', queue => {})
-	.on('disconnect', queue => queue.textChannel.send('Disconnected!'))
+	.on('disconnect', queue => {})
 	.on('empty', queue => queue.textChannel.send('Voice channel is empty! leaving...'))
 
 const { readdirSync } = require("fs");
