@@ -64,15 +64,16 @@ const PlayerMap = new Map()
 client.distube
 	.on('playSong', async (queue, song) => {
     var embed = new MessageEmbed().setColor(config.normalColor)
-    .addField(`Requested by:`, `>>> ${song.member.user.tag}`, true)
-    .addField(`Duration:`, `>>> \`${queue.formattedCurrentTime} / ${song.formattedDuration}\``, true)
-    .addField(`Queue:`, `>>> \`${queue.songs.length} song(s)\`\n\`${queue.formattedDuration}\``, true)
-    .addField(`Volume:`, `>>> \`${queue.volume} %\``, true)
-    .addField(`Loop:`, `>>> ${queue.repeatMode ? queue.repeatMode === 2 ? `:white_check_mark: \` Queue\`` : `:white_check_mark: \`Song\`` : `:x:`}`, true)
-    .addField(`Autoplay:`, `>>> ${queue.autoplay ? `:white_check_mark:` : `:x:`}`, true)
-    .addField(`Download Song:`, `>>> [\`Click here\`](${song.streamURL})`, true)
-    .addField(`Filter${queue.filters.length > 0 ? "s": ""}:`, `>>> ${queue.filters && queue.filters.length > 0 ? `${queue.filters.map(f=>`\`${f}\``).join(`, `)}` : `:x:`}`, queue.filters.length > 1 ? false : true)
-    .setAuthor(`${song.name}`, `https://cdn.discordapp.com/attachments/706329990320488541/887977649492877382/tenor.gif`, song.url)
+    .addField(`Requested by`, `${song.member.user.tag}`, true)
+    .addField(`Duration`, `${song.formattedDuration}`, true)
+    .addField(`Queue`, `${queue.songs.length} song(s) - ${queue.formattedDuration}`, true)
+    .addField(`Volume`, `${queue.volume}%`, true)
+    .addField(`Loop`, `${queue.repeatMode ? queue.repeatMode === 2 ? `:white_check_mark: Queue` : `:white_check_mark: Song` : `:x:`}`, true)
+    .addField(`Autoplay`, `${queue.autoplay ? `:white_check_mark:` : `:x:`}`, true)
+    .addField(`Download Song`, `[Click here](${song.streamURL})`, true)
+    .addField(`Filter${queue.filters.length > 0 ? "s": ""}:`, `${queue.filters && queue.filters.length > 0 ? `${queue.filters.map(f=>`${f}`).join(`, `)}` : `:x:`}`, queue.filters.length > 1 ? false : true)
+    .setAuthor(`Now Playing`, `https://cdn.discordapp.com/attachments/706329990320488541/887977649492877382/tenor.gif`)
+    .setDescription(`[${song.name}](${song.url})`)
     .setThumbnail(`https://img.youtube.com/vi/${song.id}/mqdefault.jpg`)
     .setFooter(`${song.user.tag}`, song.user.displayAvatarURL({
       dynamic: true
@@ -85,21 +86,28 @@ client.distube
     })
   })
 	.on('addSong', async (queue, song) => {
-    let text = `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.member.user.tag}\n\n${status(queue)}`
+    let text = `Added [${song.name}](${song.url}) - ${song.formattedDuration} to the queue by ${song.member.user.tag}}\n\n`
     const Embed = new MessageEmbed()
     .setAuthor('Added to queue')
     .setColor(config.normalColor)
     .setDescription(text)
+    .addField(`Song Duration`,`${song.formattedDuration}`, true)
+    //.addField(`Estimated time`,`${queue.formattedDuration}`, true)
+    .addField(`Potition`,`**#**${queue.songs.length} in queue`, true)
     .setThumbnail(song.thumbnail)
     .setTimestamp()
     queue.textChannel.send({ embeds: [Embed] })
   })
 	.on('addList', async (queue, playlist) => {
-    let text = 	`Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue by ${playlist.member.user.tag}\n\n${status(queue)}`
+    let text = 	`Added [${playlist.name}](${playlist.url}) playlist (${playlist.songs.length} songs) to queue by ${playlist.member.user.tag}}`
     const Embed = new MessageEmbed()
     .setAuthor('Added to queue')
     .setColor(config.normalColor)
     .setDescription(text)
+    .addField(`Playlist Duration`,`${playlist.formattedDuration}`, true)
+    //.addField(`Estimated time`,`${queue.formattedDuration}`, true)
+    .addField(`Potition`,`**#**${queue.songs.length} in queue`, true)
+    .setThumbnail(playlist.thumbnail)
     .setTimestamp()
     queue.textChannel.send({ embeds: [Embed] })
   })
@@ -121,8 +129,7 @@ client.distube
 	})
 	// DisTubeOptions.searchSongs = true
 	.on('searchCancel', message => message.channel.send(`Searching canceled`))
-	.on('searchInvalidAnswer', message =>
-		message.channel.send(`searchInvalidAnswer`))
+	.on('searchInvalidAnswer', message => message.channel.send(`searchInvalidAnswer`))
 	.on('searchNoResult', message => message.channel.send(`:x: No result found!`))
 	.on('error', (textChannel, e) => {
 		console.error(e)
