@@ -56,7 +56,7 @@ module.exports = {
               .setColor(config.normalColor)
               .setTimestamp()
               .setDescription(`👌 **Jumped to the \`${Position}th\` Song in the Queue!**`)
-              .setFooter(`💢 Action by: ${interaction.member.user.tag}`, interaction.member.user.displayAvatarURL({dynamic: true}))]
+              .setFooter(`Action by: ${interaction.member.user.tag}`, interaction.member.user.displayAvatarURL({dynamic: true}))]
         })
     } catch (err) {
         console.log("Something Went Wrong => ",err);

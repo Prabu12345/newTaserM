@@ -15,10 +15,10 @@ module.exports = {
         name: "Disable",
         value: 0
       }, {
-        name: "Disable",
+        name: "Song Loop",
         value: 1
       }, {
-        name: "Disable",
+        name: "Queue Loop",
         value: 2
       }]
     },
