@@ -1,14 +1,14 @@
 const { Client, Interaction, MessageEmbed } = require("discord.js");
-const config = require('../../config.json')
+const config = require("../../config.json");
 
 module.exports = {
-  name: "volume",
-  description: "Set music volume.",
+  name: "jump",
+  description: "Jumps to a specific Song in the Queue",
   type: "CHAT_INPUT",
   options: [
     {
       name: "input",
-      description: "Percentage volume ( Max 150% )",
+      description: "To which Song do you want to jump in the Queue?",
       type: 4,
       required: true,
     },
@@ -23,7 +23,7 @@ module.exports = {
   // just for telling that u can also add options
   execute: async (client, interaction) => {
     try {
-        const volume = interaction.options._hoistedOptions.find((f) => f.name === "input").value;
+        const Position = interaction.options._hoistedOptions.find((f) => f.name === "input").value;
 
         const voiceChannel = interaction.member.voice.channel;
 
@@ -40,19 +40,23 @@ module.exports = {
         let newQueue = client.distube.getQueue(interaction.guildId);
         if (!newQueue || !newQueue.songs || newQueue.songs.length == 0) return interaction.reply({
             embeds: [
-                new MessageEmbed().setColor(config.errColor).setDescription(`:x: I am nothing Playing right now!`)
+                new MessageEmbed().setColor(config.errColor).setDescription(`:x: **I am nothing Playing right now!**`)
             ],
             ephemeral: true
         })
-        if (volume > 150 || volume < 0) return interaction.reply({
+        if (Position > newQueue.songs.length - 1 || Position < 0) return interaction.reply({
             embeds: [
-                new MessageEmbed().setColor(config.errColor).setDescription(`:x: The Volume must be between __0__ and __150__!`)
+                new MessageEmbed().setColor(config.errColor).setDescription(`:x: **The Position must be between \`0\` and \`${newQueue.songs.length - 1}\`!**`)
             ],
             ephemeral: true
         })
-        await newQueue.setVolume(volume);
+        await newQueue.jump(Position);
         interaction.reply({
-            content: `Changed the Volume to __${volume}__%!`
+            embeds: [new MessageEmbed()
+              .setColor(config.normalColor)
+              .setTimestamp()
+              .setDescription(`👌 **Jumped to the \`${Position}th\` Song in the Queue!**`)
+              .setFooter(`💢 Action by: ${interaction.member.user.tag}`, interaction.member.user.displayAvatarURL({dynamic: true}))]
         })
     } catch (err) {
         console.log("Something Went Wrong => ",err);

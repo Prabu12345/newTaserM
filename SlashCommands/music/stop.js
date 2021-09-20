@@ -1,9 +1,9 @@
 const { Client, Interaction, MessageEmbed } = require("discord.js");
-const config = require('../../config.json')
+const config = require("../../config.json");
 
 module.exports = {
-  name: "clear",
-  description: "Clear queue list.",
+  name: "stop",
+  description: "Stops playing and leaves the Channel!",
   permissions: [],
   botPerms: [],
   /**
@@ -15,7 +15,6 @@ module.exports = {
   execute: async (client, interaction) => {
     try {
         const voiceChannel = interaction.member.voice.channel;
-
         if (!voiceChannel) {
           interaction.reply({ content: `:x: Join a channel and try again`, ephemeral: true });
           return;
@@ -27,31 +26,29 @@ module.exports = {
         }
 
         let newQueue = client.distube.getQueue(interaction.guildId);
-        if (!newQueue || !newQueue.songs || newQueue.songs.length == 0) return interaction.reply({
-            embeds: [
-                new MessageEmbed().setColor(config.errColor).setDescription(`:x: I am nothing Playing right now!`)
-            ],
-            ephemeral: true
-        })
-        let amount = newQueue.songs.length - 2;
-        newQueue.songs = [newQueue.songs[0]];
+        if (!newQueue || !newQueue.songs || newQueue.songs.length == 0) {
+            await newQueue.stop()
+            //Reply with a Message
+            interaction.reply({
+                embeds: [new MessageEmbed()
+                  .setColor(config.normalColor)
+                  .setTimestamp()
+                  .setDescription(`⏹ **Stopped playing and left the Channel!**`)
+                  .setFooter(`Action by: ${interaction.member.user.tag}`, interaction.member.user.displayAvatarURL({dynamic: true}))]
+            })
+        }
+        await newQueue.stop()
+        //Reply with a Message
         interaction.reply({
             embeds: [new MessageEmbed()
               .setColor(config.normalColor)
               .setTimestamp()
-              .setTitle(`**Cleared the Queue and deleted ${amount} Songs!**`)
+              .setDescription(`⏹ **Stopped playing and left the Channel!**`)
               .setFooter(`Action by: ${interaction.member.user.tag}`, interaction.member.user.displayAvatarURL({dynamic: true}))]
         })
+        return
     } catch (err) {
-        console.log("Something Went Wrong => ",err);
-        interaction.editReply({
-            content: `:x: | Error: `,
-            embeds: [
-                new MessageEmbed().setColor(config.errColor)
-                .setDescription(`\`\`\`${err}\`\`\``)
-            ],
-            ephemeral: true
-        })
+        console.log("Something Went Wrong => ", err);
     }
   },
 };
