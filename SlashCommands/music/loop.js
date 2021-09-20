@@ -9,13 +9,18 @@ module.exports = {
     {
       name: "input",
       description: "What Loop do you want to set?",
-      type: 3,
+      type: 4,
       required: true,
-      choices: [
-        ["Disable", "0"],
-        ["Song Loop", "1"],
-        ["Queue Loop", "2"]
-      ]
+      choices: [{
+        name: "Disable",
+        value: 0
+      }, {
+        name: "Disable",
+        value: 1
+      }, {
+        name: "Disable",
+        value: 2
+      }]
     },
   ],
   permissions: [],
