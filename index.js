@@ -14,8 +14,8 @@ let spotifyoptions = {
   emitEventsAfterFetching: true,
 }
 spotifyoptions.api = {
-  clientId: '540def33c9bb4c94b7d3b5bb51615624',
-  clientSecret: '89c15cd0add944c6bef3be863b964d9f',
+  clientId: '',
+  clientSecret: '',
 }
 
 client.distube = new DisTube(client, {
@@ -154,4 +154,4 @@ handlers.forEach((hanlder) => {
   require(`./handlers/${hanlder}`)(client);
 });
 
-client.login('MjcwMDc0OTgxNzAwOTkzMDI0.WHsU7Q.tY_YF61g1HLSjniFFZq5QR3olR4');
+client.login('');
